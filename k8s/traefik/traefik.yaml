@@ -11,9 +11,16 @@ spec:
     targetRevision: 25.0.0
     helm:
       releaseName: traefik
-      valuesObject:
-        nodeSelector:
-          ingress-ready: "true"
+      # valuesObject:
+      #   service:
+      #     type: ClusterIP
+      #   # ports:
+      #   #   web:
+      #   #     nodePort: 80
+      #   #   websecure:
+      #   #     nodePort: 443
+      #   nodeSelector:
+      #     ingress-ready: "true"
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
