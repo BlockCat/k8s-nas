@@ -6,3 +6,8 @@ resources:
   - argocd.yaml
   - ingress.yaml
   - repository.yaml
+configMapGenerator:
+  - name: argocd-cmd-params-cm
+    behavior: merge
+    literals:
+      - server.insecure=true
