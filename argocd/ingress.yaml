@@ -7,14 +7,14 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`argocd.localhost`)
+    - match: Host(`argocd.localhost`) || Host(`argocd.onomiwo.nl`)
       kind: Rule
       services:
         - name: argocd-server
           port: http
     - kind: Rule
       match: >-
-        Host(`argocd.internal`) &&
+        (Host(`argocd.internal`) || Host(`argocd.onomiwo.nl`)) &&
         Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
