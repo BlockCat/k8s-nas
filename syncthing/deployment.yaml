@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing
+  namespace: syncthing
+  labels:
+    app: syncthing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syncthing
+  template:
+    metadata:
+      labels:
+        app: syncthing
+    spec:
+      containers:
+        - name: syncthing
+          image: syncthing/syncthing:latest
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          ports:
+            - containerPort: 8384
+              name: http
+              protocol: TCP
+            - containerPort: 22000
+              name: sync
+              protocol: TCP
+            - containerPort: 22000
+              name: quic
+              protocol: UDP
+            - containerPort: 21027
+              name: discovery
+              protocol: UDP
+          volumeMounts:
+            - name: syncthing-config
+              mountPath: /var/syncthing/config
+            - name: syncthing-data
+              mountPath: /var/syncthing/data
+      volumes:
+        - name: syncthing-config          
+          persistentVolumeClaim:
+            claimName: syncthing-config
+        - name: syncthing-data
+          persistentVolumeClaim:
+            claimName: syncthing-data

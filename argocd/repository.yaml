@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: traefik-helm-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://traefik.github.io/charts
+  name: traefik
+  type: helm
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: harbor-helm-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://helm.goharbor.io
+  name: harbor
+  type: helm
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sealed-secrets-helm-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://bitnami-labs.github.io/sealed-secrets
+  name: sealed-secrets
+  type: helm
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-helm-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: git@github.com:BlockCat/k8s-nas.git

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+    replicas: 1
+  template:
+    metadata:
+      labels: cloudflared
+    spec:
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2023.10.0
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+            - --token
+            - $(CLOUD_FLARE_TOKEN)
+          env:
+            - name: CLOUD_FLARE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-token
+                  key: token
