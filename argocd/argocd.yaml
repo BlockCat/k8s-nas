@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:BlockCat/k8s-nas.git
+    repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
     path: argocd
   destination:
