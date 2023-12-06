@@ -2,7 +2,7 @@
 # kind: IngressRoute
 # metadata:
 #   name: immich-dashboard-https
-#   namespace: traefik
+#   namespace: immich
 # spec:
 #   entryPoints:
 #     - websecure
@@ -12,3 +12,7 @@
 #       services:
 #         - name: api@internal
 #           kind: TraefikService
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: immich
