@@ -11,6 +11,7 @@ helmCharts:
     valuesMerge: merge
     valuesInline:
       env:
+        REDIS_HOSTNAME: immich-redis-master.default
         DB_HOSTNAME: immich-postgresql.default        
       postgresql:
         enabled: true
