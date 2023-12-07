@@ -1,29 +1,4 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: immich-claim
-  labels:
-    type: local
-spec:
-  storageClassName: immich-storage
-  capacity:
-    storage: 20Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  local:
-    path: /mnt/data/main/immich
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - docker-desktop
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: immich-pvc
@@ -34,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  storageClassName: immich-storage
+  storageClassName: hostpath
