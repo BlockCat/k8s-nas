@@ -7,3 +7,4 @@ resources:
   - traefik.application.yaml
   - immich.application.yaml
   - cloudflared.application.yaml
+  - cilium.application.yaml
