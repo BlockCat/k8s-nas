@@ -10,6 +10,8 @@ helmCharts:
     repo: https://immich-app.github.io/immich-charts
     valuesMerge: override
     valuesInline:
+      image:
+        tag: v1.88.0
       env:
         REDIS_HOSTNAME: immich-redis-master.default
         DB_HOSTNAME: immich-postgresql.default
