@@ -2,11 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-network-policy
+  namespace: traefik
 spec:
   # Default deny all traffic
-  podSelector: 
+  podSelector:
     matchLabels:
-      app: traefik-service
+      app.kubernetes.io/name: traefik-service
   policyTypes:
     - Ingress
     - Egress

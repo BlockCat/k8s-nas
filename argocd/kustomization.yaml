@@ -6,7 +6,6 @@ resources:
   - argocd.yaml
   - ingress.yaml
   - repository.yaml
-  - policy.yaml
 configMapGenerator:
   - name: argocd-cmd-params-cm
     behavior: merge

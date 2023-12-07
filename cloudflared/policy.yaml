@@ -6,16 +6,15 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: cloudflared
-  policyTypes:    
+      app.kubernetes.io/name: cloudflared
+  policyTypes:
     - Egress
-  egress:
-   - {}
-    # - to:
-    #   - namespaceSelector:
-    #       matchLabels:
-    #         name: argocd
-    #   - podSelector:
-    #       matchLabels:
-    #         name: argocd-server
-
+  # egress:
+  #  - {}
+  # - to:
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         name: argocd
+  #   - podSelector:
+  #       matchLabels:
+  #         name: argocd-server
