@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared
-  namespace: traefik
+  namespace: cloudflared
 spec:
   selector:
     matchLabels:
@@ -16,6 +16,12 @@ spec:
       containers:
         - name: cloudflared
           image: cloudflare/cloudflared:2023.10.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
           args:
             - tunnel
             - --no-autoupdate

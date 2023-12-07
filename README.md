@@ -16,6 +16,10 @@ Monitors websites for changes.
 - pvc
 - no samba
 
+### Image Scanner for Security
+
+Scans images for vulnerabilities using [Trivy](https://trivy.dev/)
+
 ### [Transmission](https://transmissionbt.com/) + [VPN](https://github.com/haugene/docker-transmission-openvpn)
 
 Torrent client with VPN. [There is an image that combines both](https://github.com/haugene/docker-transmission-openvpn).

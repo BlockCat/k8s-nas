@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: immich-app
+  name: cloudflared-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
-    path: immich
+    path: cloudflared
   destination:
     server: https://kubernetes.default.svc
-    namespace: immich
+    namespace: cloudflared
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
-      # prune: true
-      selfHeal: true
+      prune: true
+      # selfHeal: true
