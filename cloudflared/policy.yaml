@@ -7,6 +7,15 @@ spec:
   podSelector:
     matchLabels:
       app: cloudflared
-  policyTypes:
-    - Ingress
+  policyTypes:    
     - Egress
+  egress:
+   - {}
+    # - to:
+    #   - namespaceSelector:
+    #       matchLabels:
+    #         name: argocd
+    #   - podSelector:
+    #       matchLabels:
+    #         name: argocd-server
+

@@ -7,3 +7,7 @@ spec:
   policyTypes:
     - Ingress
     - Egress
+  ingress:
+    - {}
+  egress:
+    - {}
