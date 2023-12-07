@@ -10,6 +10,8 @@ helmCharts:
     repo: https://immich-app.github.io/immich-charts
     valuesMerge: merge
     valuesInline:
+      env:
+        DB_HOSTNAME: immich-postgresql.default        
       postgresql:
         enabled: true
       redis:
