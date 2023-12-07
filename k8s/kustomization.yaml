@@ -3,8 +3,7 @@ kind: Kustomization
 resources:
   - default-policy.yaml
   - ../argocd
-  - pv.yaml
   - traefik.application.yaml
   - immich.application.yaml
   - cloudflared.application.yaml
-  - cilium.application.yaml
+  # - cilium.application.yaml
