@@ -21,7 +21,8 @@ helmCharts:
         enabled: true
         persistence:
           tsdata:
-            enable: true
+            enabled: true
+            storageClass: hostpath
       immich:
         persistence:
           library:
