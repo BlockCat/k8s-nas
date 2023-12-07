@@ -8,17 +8,20 @@ helmCharts:
     releaseName: immich
     version: 0.2.0
     repo: https://immich-app.github.io/immich-charts
-    valuesMerge: merge
+    valuesMerge: override
     valuesInline:
       env:
         REDIS_HOSTNAME: immich-redis-master.default
-        DB_HOSTNAME: immich-postgresql.default        
+        DB_HOSTNAME: immich-postgresql.default
       postgresql:
         enabled: true
       redis:
         enabled: true
       typesense:
         enabled: true
+        persistence:
+          tsdata:
+            enable: true
       immich:
         persistence:
           library:
