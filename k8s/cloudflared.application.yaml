@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
-    path: cloudflared
+    path: applications/cloudflared
   destination:
     server: https://kubernetes.default.svc
     namespace: cloudflared

@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
-    path: argocd
+    path: k8s/argocd
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -21,5 +21,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false

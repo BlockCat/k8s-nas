@@ -1,30 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: immich
 resources:
-  - pvc.yaml
+  - namespace.yaml
   - ingress.yaml
 helmCharts:
   - name: immich
     releaseName: immich
-    version: 0.2.0
+    version: 0.3.1
     repo: https://immich-app.github.io/immich-charts
     valuesMerge: override
     valuesInline:
-      image:
-        tag: v1.88.0
-      env:
-        REDIS_HOSTNAME: immich-redis-master.default
-        DB_HOSTNAME: immich-postgresql.default
       postgresql:
         enabled: true
       redis:
         enabled: true
-      typesense:
-        enabled: true
-        persistence:
-          tsdata:
-            enabled: true
-            storageClass: hostpath
       immich:
         persistence:
           library:

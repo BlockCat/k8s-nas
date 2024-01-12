@@ -11,6 +11,25 @@ configMapGenerator:
     literals:
       - server.insecure=true
   - name: argocd-cm
-    behavior: merge
+    behavior: merge    
     literals:
       - kustomize.buildOptions=--enable-helm
+      - url=https://argocd.localhost
+      - accounts.blockcat=apiKey, login
+  - name: argocd-cm
+    behavior: merge
+    files:
+      - dex.config
+  - name: argocd-rbac-cm
+    behavior: merge
+    literals:
+      - policy.default=role:readonly
+  - name: argocd-rbac-cm
+    behavior: merge
+    files:
+      - policy.csv
+secretGenerator:
+  - name: argocd-secret
+    behavior: merge
+    envs:
+      - ldap.env

@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: syncthing-app
-  namespace: syncthing
+  namespace: argocd
 spec:
   project: default
   source:

@@ -1,3 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: syncthing
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,9 +24,23 @@ spec:
         - name: syncthing
           image: syncthing/syncthing:latest
           imagePullPolicy: Always
+          command:
+            - "/bin/syncthing"
+          args:
+            - "-home"
+            - "/var/syncthing/config"
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
+          env:
+            - name: PUID
+              value: "1001"
+            - name: GUID
+              value: "1001"
+            - name: TZ
+              value: "Europe/Amsterdam"
+            - name: STGUIADDRESS
+              value: ""
           ports:
             - containerPort: 8384
               name: http
@@ -37,11 +56,25 @@ spec:
               protocol: UDP
           volumeMounts:
             - name: syncthing-config
-              mountPath: /var/syncthing/config
+              mountPath: /var/syncthing
             - name: syncthing-data
-              mountPath: /var/syncthing/data
+              mountPath: /var/data
+          livenessProbe: 
+            tcpSocket:
+              port: http
+          readinessProbe: 
+            tcpSocket:
+              port: http
+          resources:
+            limits:
+              cpu: 300m
+              memory: 400Mi
+            requests:
+              cpu: 200m
+              memory: 300Mi
+            
       volumes:
-        - name: syncthing-config          
+        - name: syncthing-config
           persistentVolumeClaim:
             claimName: syncthing-config
         - name: syncthing-data

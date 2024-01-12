@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glauth
+  namespace: glauth
+  labels:
+    app: glauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: glauth
+  template:
+    metadata:
+      labels:
+        app: glauth
+    spec:
+      containers:
+        - name: glauth
+          image: glauth/glauth:v2.3.0
+          imagePullPolicy: Always
+          command: ["/app/glauth", "-c", "/app/config/cfg"]
+          ports:
+            - name: ldap
+              containerPort: 3893
+            - name: ldaps
+              containerPort: 3894
+            - name: web
+              containerPort: 5555
+          volumeMounts:
+            - name: glauth-config
+              mountPath: /app/config/cfg/config.cfg
+              subPath: config.cfg
+            - name: glauth-config-users
+              mountPath: /app/config/cfg/users.cfg
+              subPath: users.cfg
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - "-c"
+                - "echo OK"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - "-c"
+                - "echo OK"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+      volumes:
+        # - name: glauth-data
+        #   persistentVolumeClaim:
+        #     claimName: glauth-data
+        - name: glauth-config
+          configMap:
+            name: glauth-config
+        - name: glauth-config-users
+          secret:
+            secretName: users
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glauth
+spec:
+  selector:
+    app: glauth
+  ports:
+    - port: 3893
+      targetPort: 3893
+      name: ldap
+    - port: 3894
+
+      targetPort: 3894
+      name: ldaps
+    - port: 5555
+      targetPort: 5555
+      name: web
