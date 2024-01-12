@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
-    path: immich
+    path: applications/immich
   destination:
     server: https://kubernetes.default.svc
     namespace: immich
@@ -17,4 +17,4 @@ spec:
       - CreateNamespace=true
     automated:
       # prune: true
-      # selfHeal: true
+      selfHeal: true

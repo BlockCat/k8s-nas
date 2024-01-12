@@ -1,9 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - default-policy.yaml
-  - ../argocd
-  - traefik.application.yaml
+  - ./argocd
   - immich.application.yaml
   - cloudflared.application.yaml
-  # - cilium.application.yaml
+  - syncthing.application.yaml

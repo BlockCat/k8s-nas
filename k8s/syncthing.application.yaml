@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: colium-app
-  namespace: argocd
+  name: syncthing-app
+  namespace: syncthing
 spec:
   project: default
   source:
     repoURL: https://github.com/BlockCat/k8s-nas.git
     targetRevision: master
-    path: cilium
+    path: applications/syncthing
   destination:
     server: https://kubernetes.default.svc
+    namespace: syncthing
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       # prune: true
-      # selfHeal: true
+      selfHeal: true

@@ -1,5 +1,16 @@
 # K8s
 
+## About this project
+
+This is a project that describes my nas setup. It is a continous work in progress.
+
+## How to get started
+
+Apply the kustomization file:
+```bash
+kubectl apply -k ./k8s
+```
+
 ## Applications
 
 ### [Syncthing](https://syncthing.net/)
