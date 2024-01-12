@@ -39,8 +39,8 @@ spec:
               value: "1001"
             - name: TZ
               value: "Europe/Amsterdam"
-            - name: STGUIADDRESS
-              value: ""
+            # - name: STGUIADDRESS
+            #   value: ""
           ports:
             - containerPort: 8384
               name: http
@@ -59,10 +59,10 @@ spec:
               mountPath: /var/syncthing
             - name: syncthing-data
               mountPath: /var/data
-          livenessProbe: 
+          livenessProbe:
             tcpSocket:
               port: http
-          readinessProbe: 
+          readinessProbe:
             tcpSocket:
               port: http
           resources:
@@ -72,7 +72,7 @@ spec:
             requests:
               cpu: 200m
               memory: 300Mi
-            
+
       volumes:
         - name: syncthing-config
           persistentVolumeClaim:
