@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: immich
 resources:
   - namespace.yaml
-  - ingress.yaml
+  - pvc.yaml
 helmCharts:
   - name: immich
     releaseName: immich

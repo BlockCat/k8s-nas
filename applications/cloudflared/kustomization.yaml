@@ -4,4 +4,5 @@ resources:
   # - ./secret.yaml
   - ./deployment.yaml
   - ./policy.yaml
+  - ./secret.sealed.yaml
   

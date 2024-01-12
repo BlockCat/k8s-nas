@@ -5,17 +5,20 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.9.2/manifests/install.yaml
   - argocd.application.yaml
   - repositories.yaml
+  - ldap-secret.sealed.yaml
 configMapGenerator:
   - name: argocd-cmd-params-cm
     behavior: merge
+    # Insecure because of cloudflared proxy
     literals:
       - server.insecure=true
   - name: argocd-cm
     behavior: merge    
     literals:
       - kustomize.buildOptions=--enable-helm
-      - url=https://argocd.localhost
+      - url=https://argocd.onomiwo.nl
       - accounts.blockcat=apiKey, login
+      - admin.enabled=false
   - name: argocd-cm
     behavior: merge
     files:
@@ -28,8 +31,3 @@ configMapGenerator:
     behavior: merge
     files:
       - policy.csv
-secretGenerator:
-  - name: argocd-secret
-    behavior: merge
-    envs:
-      - ldap.env

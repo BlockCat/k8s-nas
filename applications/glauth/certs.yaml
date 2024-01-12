@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: glauth-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: glauth
+spec:
+  secretName: glauth-crt
+  duration: 2160h
+  renewBefore: 360h
+  dnsNames:
+    - glauth
+
+  issuerRef:
+    name: glauth-issuer
+    kind: Issuer

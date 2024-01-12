@@ -34,6 +34,8 @@ spec:
             - name: glauth-config-users
               mountPath: /app/config/cfg/users.cfg
               subPath: users.cfg
+            - name: glauth-cert
+              mountPath: /app/config/auth              
           livenessProbe:
             exec:
               command:
@@ -67,6 +69,9 @@ spec:
         - name: glauth-config-users
           secret:
             secretName: users
+        - name: glauth-cert
+          secret:
+            secretName: glauth-crt
 ---
 apiVersion: v1
 kind: Service
@@ -80,9 +85,5 @@ spec:
       targetPort: 3893
       name: ldap
     - port: 3894
-
       targetPort: 3894
       name: ldaps
-    - port: 5555
-      targetPort: 5555
-      name: web

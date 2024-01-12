@@ -4,7 +4,8 @@ namespace: glauth
 resources:
   - namespace.yaml
   - deployment.yaml
-  - users.secret.yaml
+  - users.secret.sealed.yaml
+  - certs.yaml
 configMapGenerator:
   - name: glauth-config
     options:
