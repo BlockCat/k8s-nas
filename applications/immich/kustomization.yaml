@@ -13,8 +13,14 @@ helmCharts:
     valuesInline:
       postgresql:
         enabled: true
+        primary:
+          persistence:
+            existingClaim: immich-pgsql-pvc
       redis:
         enabled: true
+        master:
+          persistence:
+            existingClaim: immich-redis-pvc
       immich:
         persistence:
           library:
