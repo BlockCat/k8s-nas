@@ -1,86 +1,44 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: immich-pv
-spec:
-  capacity:
-    storage: 20Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
-  storageClassName: manual
-  hostPath:
-    path: /var/mnt/maindata/immich/immich
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: immich-redis-pv
-spec:
-  capacity:
-    storage: 8Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
-  storageClassName: manual
-  hostPath:
-    path: /var/mnt/maindata/immich/redis
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: immich-pgsql-pv
-spec:
-  capacity:
-    storage: 8Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
-  storageClassName: manual
-  hostPath:
-    path: /var/mnt/maindata/immich/pgsql
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: immich-pvc
   namespace: immich
+  annotations:
+    volumeType: local
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 20Gi
-  storageClassName: manual
-  volumeName: immich-pv
+  storageClassName: local-path
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: immich-redis-pvc
   namespace: immich
+  annotations:
+    volumeType: local
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 8Gi
-  storageClassName: manual
-  volumeName: immich-redis-pv
+  storageClassName: local-path
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: immich-pgsql-pvc
   namespace: immich
+  annotations:
+    volumeType: local
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 8Gi
-  storageClassName: manual
-  volumeName: immich-pgsql-pv
+  storageClassName: local-path

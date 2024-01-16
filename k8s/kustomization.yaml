@@ -2,8 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./argocd
+  - ./local-path-provisioner
   - immich.application.yaml
-  - cloudflared.application.yaml
-  - syncthing.application.yaml
+  - cloudflared.application.yaml  
+  # - syncthing.application.yaml
   - https://github.com/cert-manager/cert-manager/releases/download/v1.13.3/cert-manager.yaml
   - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.24.5/controller.yaml
