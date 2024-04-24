@@ -1,4 +1,5 @@
 **/secret.yaml
 **/secret.yml
+**/*.secret.yaml
 test.yaml
 test.yml

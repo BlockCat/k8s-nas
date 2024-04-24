@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission
+  namespace: transmission
+  labels:
+    app: transmission
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission
+    spec:
+      initContainers:
+        - name: init
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              'ls /tmp/ovpn/ && cp /tmp/ovpn/* /etc/openvpn/custom/ && echo "Done" && ls /etc/openvpn/custom/',
+            ]
+          securityContext:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+            runAsUser: 1003
+            runAsGroup: 1003
+            seccompProfile:
+              type: Localhost
+              localhostProfile: profiles/audit.json
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: transmission-ovpn
+              mountPath: /tmp/ovpn/
+            - name: transmission-ovpn-scratch
+              mountPath: /etc/openvpn/custom
+      containers:
+        - name: transmission
+          image: haugene/transmission-openvpn:dev          
+          ports:
+            - name: webinterface
+              containerPort: 9091
+          env:
+            - name: OPENVPN_PROVIDER
+              value: custom
+            - name: OPENVPN_OPTS
+              value: --inactive 3600 --ping 10 --ping-exit 60
+            - name: PUID
+              value: "1003"
+            - name: PGID
+              value: "1003"
+          envFrom:
+            - secretRef:
+                name: transmission-credentials
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            successThreshold: 1
+            tcpSocket:
+              port: 9091
+            timeoutSeconds: 2
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            successThreshold: 2
+            tcpSocket:
+              port: 9091
+            timeoutSeconds: 2
+          securityContext:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: Localhost
+              localhostProfile: profiles/audit.json
+
+            capabilities:
+              # drop:
+              #   - ALL
+              add:
+                - NET_ADMIN
+                - NET_RAW
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 1000Mi
+          volumeMounts:
+            - name: transmission-data
+              mountPath: /data
+            - name: transmission-config
+              mountPath: /config
+            - name: transmission-ovpn-scratch
+              mountPath: /etc/openvpn/custom
+      volumes:
+        - name: transmission-data
+          persistentVolumeClaim:
+            claimName: transmission-pvc
+        - name: transmission-config
+          persistentVolumeClaim:
+            claimName: transmission-config-pvc
+        - name: transmission-ovpn
+          secret:
+            secretName: transmission-ovpn
+        - name: transmission-ovpn-scratch
+          emptyDir:
+            sizeLimit: 50Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+spec:
+  selector:
+    app: transmission
+  ports:
+    - port: 9091
+      targetPort: 9091
+      name: webinterface

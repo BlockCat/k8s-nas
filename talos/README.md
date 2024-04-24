@@ -9,8 +9,7 @@ talosctl --talosconfig talosconfig config node 192.168.?.?
 ```
 
 ```bash
-talosctl --nodes 192.168.0.2 --endpoints 192.168.0.2 health \
-   --talosconfig=./talosconfig
-talosctl --nodes 192.168.0.2 --endpoints 192.168.0.2 dashboard \
-   --talosconfig=./talosconfig
+# talosctl --nodes 192.168.0.2 --endpoints 192.168.0.2 --talosconfig=./talosconfig health 
+# talosctl --nodes 192.168.0.2 --endpoints 192.168.0.2 --talosconfig=./talosconfig dashboard 
+talosctl --talosconfig=./talosconfig apply -f .\controlplane.yaml
 ```
