@@ -42,7 +42,7 @@ spec:
               mountPath: /etc/openvpn/custom
       containers:
         - name: transmission
-          image: haugene/transmission-openvpn:dev          
+          image: haugene/transmission-openvpn:dev
           ports:
             - name: webinterface
               containerPort: 9091
@@ -58,22 +58,28 @@ spec:
           envFrom:
             - secretRef:
                 name: transmission-credentials
-          livenessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 10
-            periodSeconds: 2
-            successThreshold: 1
-            tcpSocket:
-              port: 9091
-            timeoutSeconds: 2
-          readinessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 10
-            periodSeconds: 2
-            successThreshold: 2
-            tcpSocket:
-              port: 9091
-            timeoutSeconds: 2
+          # livenessProbe:
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 20
+          #   periodSeconds: 10
+          #   successThreshold: 1
+          #   exec:
+          #     command:
+          #       - sh
+          #       - -c
+          #       - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
+          #   timeoutSeconds: 2
+          # readinessProbe:
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 20
+          #   periodSeconds: 10
+          #   successThreshold: 2
+          #   exec:
+          #     command:
+          #       - sh
+          #       - -c
+          #       - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
+          #   timeoutSeconds: 2
           securityContext:
             runAsNonRoot: false
             allowPrivilegeEscalation: false
