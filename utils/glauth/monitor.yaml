@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glauth-monitor
+  namespace: glauth
+  labels:
+    app: glauth-monitor
+spec:
+  selector:
+    app: glauth
+  ports:
+    - port: 5555
+      targetPort: 5555
+      name: web
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: glauth-prometheus  
+  namespace: glauth
+spec:
+  selector:
+    matchLabels:
+      app: glauth-monitor
+  endpoints:
+  - port: web
+    interval: 10s
+    path: /metrics

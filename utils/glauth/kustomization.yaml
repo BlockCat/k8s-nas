@@ -6,6 +6,7 @@ resources:
   - deployment.yaml
   - users.secret.sealed.yaml
   - certs.yaml
+  - monitor.yaml
 configMapGenerator:
   - name: glauth-config
     options:
