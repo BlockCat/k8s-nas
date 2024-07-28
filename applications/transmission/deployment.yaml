@@ -25,7 +25,7 @@ spec:
               'ls /tmp/ovpn/ && cp /tmp/ovpn/* /etc/openvpn/custom/ && echo "Done" && ls /etc/openvpn/custom/',
             ]
           securityContext:
-            runAsNonRoot: false
+            runAsNonRoot: true
             allowPrivilegeEscalation: false
             runAsUser: 1003
             runAsGroup: 1003
@@ -82,6 +82,8 @@ spec:
           #   timeoutSeconds: 2
           securityContext:
             runAsNonRoot: false
+            # runAsUser: 1003
+            # runAsGroup: 1003
             allowPrivilegeEscalation: false
             seccompProfile:
               type: Localhost
