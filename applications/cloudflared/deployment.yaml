@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: cloudflared
   namespace: cloudflared
+  labels:
+    app: cloudflared
 spec:
   selector:
     matchLabels:

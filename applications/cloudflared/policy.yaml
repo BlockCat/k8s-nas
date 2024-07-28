@@ -1,20 +1,44 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: cloudflared-connection-policy
+  namespace: cloudflared
+spec:
+  endpointSelector:
+    matchLabels:
+      app: cloudflared
+  ingress:
+    - {}
+  egress:
+    - toEntities:
+        - world
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": argocd
+            "k8s:cloudflare": public
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": immich
+            app.kubernetes.io/instance: immich
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+          rules:
+            dns:
+              - matchPattern: "*"
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: cloudflared-policy
+  name: default-deny-all
   namespace: cloudflared
 spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: cloudflared
+  podSelector: {}
   policyTypes:
+    - Ingress
     - Egress
-  # egress:
-  #  - {}
-  # - to:
-  #   - namespaceSelector:
-  #       matchLabels:
-  #         name: argocd
-  #   - podSelector:
-  #       matchLabels:
-  #         name: argocd-server
