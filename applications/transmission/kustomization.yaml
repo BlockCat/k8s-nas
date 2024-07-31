@@ -7,3 +7,4 @@ resources:
   - transmission-credentials.sealed.yaml
   - transmission-ovpn.sealed.yaml
   - deployment.yaml
+  - service.yaml

@@ -25,10 +25,10 @@ spec:
               'ls /tmp/ovpn/ && cp /tmp/ovpn/* /etc/openvpn/custom/ && echo "Done" && ls /etc/openvpn/custom/',
             ]
           securityContext:
-            runAsNonRoot: true
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
-            runAsUser: 1003
-            runAsGroup: 1003
+            # runAsUser: 1003
+            # runAsGroup: 1003
             seccompProfile:
               type: Localhost
               localhostProfile: profiles/audit.json
@@ -51,6 +51,8 @@ spec:
               value: custom
             - name: OPENVPN_OPTS
               value: --inactive 3600 --ping 10 --ping-exit 60
+            - name: LOCAL_NETWORK
+              value: "192.168.178.0/24,10.244.0.0/16"
             - name: PUID
               value: "1003"
             - name: PGID
@@ -58,28 +60,28 @@ spec:
           envFrom:
             - secretRef:
                 name: transmission-credentials
-          # livenessProbe:
-          #   failureThreshold: 3
-          #   initialDelaySeconds: 20
-          #   periodSeconds: 10
-          #   successThreshold: 1
-          #   exec:
-          #     command:
-          #       - sh
-          #       - -c
-          #       - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
-          #   timeoutSeconds: 2
-          # readinessProbe:
-          #   failureThreshold: 3
-          #   initialDelaySeconds: 20
-          #   periodSeconds: 10
-          #   successThreshold: 2
-          #   exec:
-          #     command:
-          #       - sh
-          #       - -c
-          #       - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
-          #   timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 20
+            periodSeconds: 100
+            successThreshold: 1
+            exec:
+              command:
+                - bash
+                - -c
+                - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
+            timeoutSeconds: 60
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 20
+            periodSeconds: 100
+            successThreshold: 2
+            exec:
+              command:
+                - bash
+                - -c
+                - "curl -s https://airvpn.org/api/whatismyip/ | jq -e '.airvpn == true'"
+            timeoutSeconds: 60
           securityContext:
             runAsNonRoot: false
             # runAsUser: 1003
@@ -109,6 +111,32 @@ spec:
               mountPath: /config
             - name: transmission-ovpn-scratch
               mountPath: /etc/openvpn/custom
+        - image: ghcr.io/blockcat/transmission-exporter:master
+          name: transmission-exporter
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          ports:
+            - name: prom-scrape
+              containerPort: 9190
+          env:
+            - name: TRANSMISSION_ADDR
+              value: "http://localhost:9091"
+            #  Uncomment these once you add authentication to transmission
+            # - name: TRANSMISSION_USERNAME
+            #   value: "transmission"
+            # You can use a tool like `kontemplate` + `pass` to avoid hardcoding this in your repo
+            # - name: TRANSMISSION_PASSWORD
+            #   value: "hunter2"
+            - name: WEB_PATH
+              value: "/metrics"
+            - name: WEB_ADDR
+              value: ":9190"
       volumes:
         - name: transmission-data
           persistentVolumeClaim:
@@ -122,18 +150,3 @@ spec:
         - name: transmission-ovpn-scratch
           emptyDir:
             sizeLimit: 50Mi
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: transmission
-spec: 
-  type: NodePort
-  selector:
-    app: transmission
-  ports:
-    - port: 9091
-      targetPort: 9091
-      name: webinterface
-      nodePort: 30000
