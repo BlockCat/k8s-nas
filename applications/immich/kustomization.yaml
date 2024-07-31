@@ -11,6 +11,7 @@ helmCharts:
     repo: https://immich-app.github.io/immich-charts
     valuesMerge: override
     valuesInline:
+
       image:
         tag: v1.110.0
       postgresql:
@@ -24,6 +25,8 @@ helmCharts:
           persistence:
             existingClaim: immich-redis-pvc
       immich:
+        metrics:
+          enabled: true
         persistence:
           library:
             existingClaim: immich-pvc
