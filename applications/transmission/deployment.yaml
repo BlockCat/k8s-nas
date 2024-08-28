@@ -99,10 +99,10 @@ spec:
                 - NET_RAW
           resources:
             requests:
-              cpu: 100m
+              cpu: 300m
               memory: 100Mi
             limits:
-              cpu: 100m
+              cpu: 300m
               memory: 1000Mi
           volumeMounts:
             - name: transmission-data
