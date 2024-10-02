@@ -52,7 +52,7 @@ spec:
             - name: OPENVPN_OPTS
               value: --inactive 3600 --ping 10 --ping-exit 60
             - name: LOCAL_NETWORK
-              value: "192.168.178.0/24,10.244.0.0/16"
+              value: "192.168.2.0/24,10.244.0.0/16"
             - name: PUID
               value: "1003"
             - name: PGID
